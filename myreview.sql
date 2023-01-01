@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2022 at 11:54 AM
+-- Generation Time: Jan 01, 2023 at 03:12 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -24,24 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_info`
+-- Table structure for table `admin`
 --
 
-CREATE TABLE `admin_info` (
-  `ID` int(30) NOT NULL,
-  `username` text NOT NULL,
-  `password` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `detail_review`
---
-
-CREATE TABLE `detail_review` (
+CREATE TABLE `admin` (
   `ID` int(11) NOT NULL,
-  `review` text NOT NULL
+  `admin_id` int(11) NOT NULL,
+  `user_name` text NOT NULL,
+  `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -54,7 +44,7 @@ CREATE TABLE `review` (
   `ID` int(11) NOT NULL,
   `s_id` int(11) NOT NULL,
   `t_id` int(11) NOT NULL,
-  `review` text NOT NULL,
+  `review_info` text NOT NULL,
   `rating` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -66,9 +56,10 @@ CREATE TABLE `review` (
 
 CREATE TABLE `student` (
   `ID` int(11) NOT NULL,
+  `student_id` varchar(15) NOT NULL,
   `name` text NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `password` varchar(20) NOT NULL
+  `email` text NOT NULL,
+  `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -80,9 +71,9 @@ CREATE TABLE `student` (
 CREATE TABLE `teacher` (
   `ID` int(11) NOT NULL,
   `name` text NOT NULL,
-  `info` text NOT NULL,
   `img` text NOT NULL,
-  `initial` text NOT NULL
+  `initial` text NOT NULL,
+  `info` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -90,24 +81,17 @@ CREATE TABLE `teacher` (
 --
 
 --
--- Indexes for table `admin_info`
+-- Indexes for table `admin`
 --
-ALTER TABLE `admin_info`
+ALTER TABLE `admin`
   ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `detail_review`
---
-ALTER TABLE `detail_review`
-  ADD UNIQUE KEY `ID` (`ID`);
 
 --
 -- Indexes for table `review`
 --
 ALTER TABLE `review`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID` (`ID`),
-  ADD KEY `s_id` (`s_id`),
+  ADD UNIQUE KEY `s_id` (`s_id`),
   ADD KEY `t_id` (`t_id`);
 
 --
@@ -127,10 +111,10 @@ ALTER TABLE `teacher`
 --
 
 --
--- AUTO_INCREMENT for table `admin_info`
+-- AUTO_INCREMENT for table `admin`
 --
-ALTER TABLE `admin_info`
-  MODIFY `ID` int(30) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `admin`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `review`
@@ -155,17 +139,11 @@ ALTER TABLE `teacher`
 --
 
 --
--- Constraints for table `detail_review`
---
-ALTER TABLE `detail_review`
-  ADD CONSTRAINT `review_fk` FOREIGN KEY (`ID`) REFERENCES `review` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `review`
 --
 ALTER TABLE `review`
-  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`s_id`) REFERENCES `student` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`t_id`) REFERENCES `teacher` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `student_fk` FOREIGN KEY (`s_id`) REFERENCES `student` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teacher_fk` FOREIGN KEY (`t_id`) REFERENCES `teacher` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
